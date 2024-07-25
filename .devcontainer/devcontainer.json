@@ -7,7 +7,7 @@
 //  "runServices": ["kafka", "kafka-ui", "mysql", "keycloak"],
   "remoteUser": "developer",
   "containerUser": "developer",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/havdb-einnahmeplattform,type=bind",
+  //"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/havdb-einnahmeplattform,type=bind",
   "workspaceFolder": "/workspaces",
   "mounts": [
     // these two lines are only required for jetbrains -> vscode will automatically add ssh and gpg keys to the container via ssh-/gpg-agent

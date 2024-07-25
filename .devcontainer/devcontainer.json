@@ -1,0 +1,137 @@
+{
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+  "name": "EPLF GO Container",
+  "image": "crhavdblabor9r5j5oly.azurecr.io/go-dev-container:latest",
+//  "dockerComposeFile": "docker-compose.yaml",
+//  "service": "eplf-dev",
+//  "runServices": ["kafka", "kafka-ui", "mysql", "keycloak"],
+  "updateRemoteUserUID": true,
+  "remoteUser": "developer",
+  "containerUser": "developer",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/havdb-einnahmeplattform,type=bind",
+  "workspaceFolder": "/workspaces",
+  "mounts": [
+    // these two lines are only required for jetbrains -> vscode will automatically add ssh and gpg keys to the container via ssh-/gpg-agent
+    "source=/home/${localEnv:USER}/.ssh,target=/home/developer/.ssh,type=bind",
+    "source=/home/${localEnv:USER}/.gnupg,target=/home/developer/.gnupg,type=bind",
+    // mount your home directory to the container
+    "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached",
+    // Binding the host docker socket to the container (docker-outside-of-docker)
+    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
+    // persist user profile in a named volume
+    "source=profile,target=/home/developer/,type=volume",
+    // mount some cache stuff for go builds
+    "source=pnpmstore,target=/home/developer/pnpm/store,type=volume",
+    "source=gobuild,target=/home/developer/.cache/go-build,type=volume",
+    "source=gopkg,target=/home/developer/go/pkg/mod/,type=volume",
+    // persist vscode stuff in an anonymous volume -> will be deleted on recreation
+    "target=/root/.vscode-server,type=volume"
+  ],
+  "postStartCommand": "bash /workspaces/havdb-einnahmeplattform/.devcontainer/clone-repos.sh > /tmp/setuplog",
+  "forwardPorts": [
+    // eplf ui
+    3000,
+    // bgz ui
+    3001
+  ],
+  "containerEnv": {
+    "PATH": "/usr/local/go/bin:/home/developer/go/bin:${PATH}",
+    "TZ": "Europe/Berlin",
+    "LOCAL_WORKSPACE_FOLDER": "/workspaces",
+    "AZ_READ_TOKEN": "${localEnv:AZ_READ_TOKEN}"
+  },
+  "capAdd": [
+    "SYS_PTRACE"
+  ],
+  "securityOpt": [
+    "apparmor=unconfined",
+    "seccomp=unconfined"
+  ],
+  "customizations": {
+    "jetbrains" : {
+      "backend": "GoLand",
+      "extensions": [
+        "bigdatatools-core",
+        ".env files support",
+        ".ignore"
+      ],
+      "settings" : {
+        "com.intellij:app:Vcs-Log-App-Settings.show_changes_from_parents": true,
+        "com.intellij:app:Vcs-Log-App-Settings.show_tag_names": true,
+        "Docker:app:DockerSettings.dockerPath": "/usr/bin/docker",
+        "Docker:app:DockerSettings.dockerComposePath": "/usr/bin/docker"
+      }
+    },
+
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.useLanguageServer": true,
+        "go.gopath": "/home/developer/go",
+        "go.lintTool": "golangci-lint",
+        "go.lintFlags": [
+          "-c",
+          ".golangci.yaml",
+          "--issues-exit-code=0"
+        ],
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh"
+          },
+          "bash": {
+            "path": "/usr/bin/bash"
+          }
+        }
+      },
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        // go stuff
+        "golang.Go",
+        "msyrus.go-doc",
+
+        // ui stuff
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "antfu.vite",
+
+        // common
+        "EditorConfig.EditorConfig",
+        "ms-vscode-remote.vscode-remote-extensionpack",
+        "ms-vscode.remote-explorer",
+        "ms-vscode.remote-server",
+        "oderwat.indent-rainbow",
+        "MS-SarifVSCode.sarif-viewer",
+        "foxundermoon.shell-format",
+        "redhat.vscode-yaml",
+        "kokakiwi.vscode-just",
+        "robocorp.robotframework-lsp",
+        "jebbs.plantuml",
+        "terrastruct.d2",
+        "pomdtr.markdown-kroki",
+        "cweijan.dbclient-jdbc",
+        "cweijan.vscode-mysql-client2",
+        "cweijan.vscode-postgresql-client2",
+        "cweijan.vscode-es-client2",
+        "mkloubert.vscode-http-client",
+        "Postman.postman-for-vscode",
+
+        // docker
+        "ms-azuretools.vscode-docker",
+        "p1c2u.docker-compose",
+        "formulahendry.docker-explorer",
+        "henriiik.docker-linter",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+
+        // git
+        "codezombiech.gitignore",
+        "donjayamanne.githistory",
+        "alefragnani.project-manager",
+        "eamodio.gitlens",
+        "srmeyers.git-prefix"
+      ]
+    }
+  }
+}

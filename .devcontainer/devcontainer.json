@@ -5,7 +5,6 @@
 //  "dockerComposeFile": "docker-compose.yaml",
 //  "service": "eplf-dev",
 //  "runServices": ["kafka", "kafka-ui", "mysql", "keycloak"],
-//  "updateRemoteUserUID": true,
   "remoteUser": "developer",
   "containerUser": "developer",
 //  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/havdb-einnahmeplattform,type=bind",
@@ -35,7 +34,6 @@
     3001
   ],
   "remoteEnv": {
-    "PATH": "/usr/local/go/bin:/home/developer/go/bin:${containerEnv:PATH}",
     "AZ_READ_TOKEN": "${localEnv:AZ_READ_TOKEN}"
   },
   "containerEnv": {

@@ -5,10 +5,15 @@
 //  "dockerComposeFile": "docker-compose.yaml",
 //  "service": "eplf-dev",
 //  "runServices": ["kafka", "kafka-ui", "mysql", "keycloak"],
+//  "updateRemoteUserUID": true,
   "remoteUser": "developer",
   "containerUser": "developer",
+//  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/havdb-einnahmeplattform,type=bind",
   "workspaceFolder": "/workspaces",
   "mounts": [
+    // these two lines are only required for jetbrains -> vscode will automatically add ssh and gpg keys to the container via ssh-/gpg-agent
+//    "source=/home/${localEnv:USER}/.ssh,target=/home/developer/.ssh,type=bind",
+//    "source=/home/${localEnv:USER}/.gnupg,target=/home/developer/.gnupg,type=bind",
     // mount your home directory to the container
     //"source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached",
     // Binding the host docker socket to the container (docker-outside-of-docker)
@@ -22,7 +27,7 @@
     // persist vscode stuff in an anonymous volume -> will be deleted on recreation
     "target=/root/.vscode-server,type=volume"
   ],
-  //"postStartCommand": "bash /workspaces/havdb-einnahmeplattform/.devcontainer/clone-repos.sh > /tmp/setuplog",
+//  "postStartCommand": "bash /workspaces/havdb-einnahmeplattform/.devcontainer/clone-repos.sh > /tmp/setuplog",
   "forwardPorts": [
     // eplf ui
     3000,
@@ -35,7 +40,8 @@
   },
   "containerEnv": {
     "TZ": "Europe/Berlin",
-    "LOCAL_WORKSPACE_FOLDER": "/workspaces"
+    "LOCAL_WORKSPACE_FOLDER": "/workspaces",
+    "AZ_READ_TOKEN": "${localEnv:AZ_READ_TOKEN}"
   },
   "capAdd": [
     "SYS_PTRACE"
@@ -47,14 +53,7 @@
   "customizations": {
     "jetbrains" : {
       "backend": "GoLand",
-      "extensions": [
-        "bigdatatools-core",
-        ".env files support",
-        ".ignore"
-      ],
       "settings" : {
-        "com.intellij:app:Vcs-Log-App-Settings.show_changes_from_parents": true,
-        "com.intellij:app:Vcs-Log-App-Settings.show_tag_names": true,
         "Docker:app:DockerSettings.dockerPath": "/usr/bin/docker",
         "Docker:app:DockerSettings.dockerComposePath": "/usr/bin/docker"
       }

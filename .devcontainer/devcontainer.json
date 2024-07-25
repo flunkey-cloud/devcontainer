@@ -32,8 +32,7 @@
   "containerEnv": {
     "PATH": "/usr/local/go/bin:/home/developer/go/bin:${PATH}",
     "TZ": "Europe/Berlin",
-    "LOCAL_WORKSPACE_FOLDER": "/workspaces",
-    "AZ_READ_TOKEN": "${localEnv:AZ_READ_TOKEN}"
+    "LOCAL_WORKSPACE_FOLDER": "/workspaces"
   },
   "capAdd": [
     "SYS_PTRACE"

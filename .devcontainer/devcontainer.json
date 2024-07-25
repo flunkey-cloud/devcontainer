@@ -26,7 +26,7 @@
     // persist vscode stuff in an anonymous volume -> will be deleted on recreation
     "target=/root/.vscode-server,type=volume"
   ],
-  "postStartCommand": "bash /workspaces/havdb-einnahmeplattform/.devcontainer/clone-repos.sh > /tmp/setuplog",
+  //"postStartCommand": "bash /workspaces/havdb-einnahmeplattform/.devcontainer/clone-repos.sh > /tmp/setuplog",
   "forwardPorts": [
     // eplf ui
     3000,

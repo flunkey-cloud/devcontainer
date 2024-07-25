@@ -13,8 +13,6 @@
     // these two lines are only required for jetbrains -> vscode will automatically add ssh and gpg keys to the container via ssh-/gpg-agent
 //    "source=/home/${localEnv:USER}/.ssh,target=/home/developer/.ssh,type=bind",
 //    "source=/home/${localEnv:USER}/.gnupg,target=/home/developer/.gnupg,type=bind",
-    // mount your home directory to the container
-    "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached",
     // Binding the host docker socket to the container (docker-outside-of-docker)
     "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
     // persist user profile in a named volume
